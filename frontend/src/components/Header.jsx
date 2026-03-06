@@ -31,8 +31,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <Printer className="w-8 h-8 text-cyan-600" />
-            <span className="text-2xl font-bold text-slate-800">3D<span className="text-cyan-600">Print</span>Pro</span>
+            <img src="/logo-square.png" alt="B&K 3D" className="w-10 h-10" />
+            <span className="text-xl font-bold text-slate-800">B&K <span className="text-cyan-600">3D</span></span>
           </Link>
           
           {/* Desktop Menu */}

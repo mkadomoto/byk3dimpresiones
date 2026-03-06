@@ -9,24 +9,26 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Printer className="w-8 h-8 text-cyan-500" />
-              <span className="text-2xl font-bold text-white">3D<span className="text-cyan-500">Print</span>Pro</span>
+              <img src="/logo-square.png" alt="B&K 3D" className="w-10 h-10" />
+              <span className="text-2xl font-bold text-white">B&K <span className="text-cyan-500">3D</span></span>
             </div>
             <p className="text-slate-400 mb-4">
-              Transformando ideas en realidad con tecnología de impresión 3D de vanguardia.
+              Transformando ideas en realidad con tecnología de impresión 3D en Buenos Aires.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-600 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-600 transition-colors">
+              <a 
+                href="https://instagram.com/byk.3d.impresiones" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-pink-600 transition-colors"
+              >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-600 transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-600 transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a 
+                href="mailto:ByK3Dimpresiones@gmail.com"
+                className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-600 transition-colors"
+              >
+                <Mail className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -59,15 +61,23 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <Mail className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">contacto@3dprintpro.com</span>
+                <a href="mailto:ByK3Dimpresiones@gmail.com" className="text-sm hover:text-cyan-500">
+                  ByK3Dimpresiones@gmail.com
+                </a>
               </li>
               <li className="flex items-start gap-2">
-                <Phone className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+                <Instagram className="w-5 h-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                <a 
+                  href="https://instagram.com/byk.3d.impresiones"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-pink-500"
+                >
+                  @byk.3d.impresiones
+                </a>
               </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="w-5 h-5 text-cyan-500 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">Calle Principal 123, Ciudad, País</span>
+              <li className="text-sm text-slate-400">
+                📍 Envíos en Buenos Aires
               </li>
             </ul>
           </div>
@@ -77,12 +87,11 @@ const Footer = () => {
         <div className="border-t border-slate-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-slate-400 text-sm">
-              © 2024 3DPrintPro. Todos los derechos reservados.
+              © 2024 B&K 3D Impresiones. Todos los derechos reservados.
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors">Términos y Condiciones</a>
               <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors">Política de Privacidad</a>
-              <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors">Cookies</a>
             </div>
           </div>
         </div>

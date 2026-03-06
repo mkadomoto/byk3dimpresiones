@@ -1,0 +1,33 @@
+=============================================
+ACCESO AL PANEL DE ADMINISTRACIÓN
+=============================================
+
+Para entrar al panel admin y cargar productos:
+
+1. Ve a: https://design-studio-3d-4.preview.emergentagent.com/login
+
+2. Credenciales:
+   Usuario: admin
+   Contraseña: Admin123!
+
+3. Una vez dentro verás dos pestañas:
+   - Productos: Para agregar/editar productos
+   - Categorías: Para crear categorías
+
+PASO A PASO PARA AGREGAR PRODUCTOS:
+
+1. Primero crea categorías:
+   - Clic en pestaña "Categorías"
+   - Clic en "Nueva Categoría"
+   - Ejemplos: "Impresiones Útiles", "Impresiones Estéticas", "Soportes", "Figuras", etc.
+
+2. Luego agrega productos:
+   - Clic en pestaña "Productos"  
+   - Clic en "Nuevo Producto"
+   - Completa: Nombre, Descripción, Precio, URL de Imagen
+   - Selecciona una o más categorías
+   - Guardar
+
+Los productos aparecerán automáticamente en la tienda.
+
+=============================================

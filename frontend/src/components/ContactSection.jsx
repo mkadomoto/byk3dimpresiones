@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -9,11 +9,17 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Toaster } from './ui/sonner';
 import { toast } from 'sonner';
-import { Mail, Phone, MapPin, Upload, Send } from 'lucide-react';
+import { Mail, Upload, Send, Instagram } from 'lucide-react';
 import axios from 'axios';
+import emailjs from '@emailjs/browser';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_y8i2t8b';
+const EMAILJS_TEMPLATE_ID = 'template_orkaeub';
+const EMAILJS_PUBLIC_KEY = 'rFzNRld1rTPvJuklw';
 
 const ContactSection = () => {
   const [searchParams] = useSearchParams();
@@ -29,6 +35,9 @@ const ContactSection = () => {
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
     // Pre-fill message if coming from store
     const messageParam = searchParams.get('message');
     if (messageParam) {
@@ -60,6 +69,23 @@ const ContactSection = () => {
     setLoading(true);
 
     try {
+      // Send email via EmailJS
+      const emailParams = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || 'No proporcionado',
+        service_type: formData.serviceType,
+        message: formData.message,
+        file_name: fileName || 'Sin archivo adjunto'
+      };
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        emailParams
+      );
+
+      // Also save to database
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
@@ -71,14 +97,14 @@ const ContactSection = () => {
         formDataToSend.append('file', formData.file);
       }
 
-      const response = await axios.post(`${API}/contact`, formDataToSend, {
+      await axios.post(`${API}/contact`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
 
       toast.success('¡Mensaje enviado!', {
-        description: 'Nos pondremos en contacto contigo pronto.'
+        description: 'Te contactaremos pronto por email.'
       });
 
       // Reset form
@@ -253,31 +279,31 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
-                    <p className="text-slate-600">contacto@3dprintpro.com</p>
-                    <p className="text-slate-600">ventas@3dprintpro.com</p>
+                    <a href="mailto:ByK3Dimpresiones@gmail.com" className="text-slate-600 hover:text-cyan-600">
+                      ByK3Dimpresiones@gmail.com
+                    </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Instagram className="w-6 h-6 text-pink-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">Teléfono</h4>
-                    <p className="text-slate-600">+1 (555) 123-4567</p>
-                    <p className="text-slate-600">Lun - Vie: 9:00 AM - 6:00 PM</p>
+                    <h4 className="font-semibold text-slate-900 mb-1">Instagram</h4>
+                    <a 
+                      href="https://instagram.com/byk.3d.impresiones" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-slate-600 hover:text-pink-600"
+                    >
+                      @byk.3d.impresiones
+                    </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">Ubicación</h4>
-                    <p className="text-slate-600">Calle Principal 123</p>
-                    <p className="text-slate-600">Ciudad, País 12345</p>
-                  </div>
+                <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                  <p className="text-slate-700 font-medium">📍 Envíos en Buenos Aires</p>
                 </div>
               </div>
             </div>
