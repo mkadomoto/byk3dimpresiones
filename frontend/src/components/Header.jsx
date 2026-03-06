@@ -49,9 +49,6 @@ const Header = () => {
             <Link to="/tienda" className="text-slate-600 hover:text-cyan-600 transition-colors font-medium">
               Tienda
             </Link>
-            <button onClick={() => scrollToSection('galeria')} className="text-slate-600 hover:text-cyan-600 transition-colors font-medium">
-              Galería
-            </button>
             <button onClick={() => scrollToSection('contacto')} className="text-slate-600 hover:text-cyan-600 transition-colors font-medium">
               Contacto
             </button>
@@ -100,12 +97,6 @@ const Header = () => {
             >
               Tienda
             </Link>
-            <button 
-              onClick={() => scrollToSection('galeria')} 
-              className="block w-full text-left py-2 text-slate-600 hover:text-cyan-600 transition-colors font-medium"
-            >
-              Galería
-            </button>
             <button 
               onClick={() => scrollToSection('contacto')} 
               className="block w-full text-left py-2 text-slate-600 hover:text-cyan-600 transition-colors font-medium"

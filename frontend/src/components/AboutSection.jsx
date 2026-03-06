@@ -7,17 +7,17 @@ const AboutSection = () => {
     {
       icon: <Award className="w-8 h-8 text-cyan-600" />,
       title: "Calidad Premium",
-      description: "Utilizamos impresoras de última generación y materiales certificados"
+      description: ""
     },
     {
       icon: <Clock className="w-8 h-8 text-blue-600" />,
-      title: "Entrega Rápida",
-      description: "Plazos de entrega desde 48 horas para proyectos urgentes"
+      title: "Plazos de entrega mínimos",
+      description: ""
     },
     {
       icon: <Shield className="w-8 h-8 text-orange-600" />,
       title: "Garantía Total",
-      description: "100% de satisfacción garantizada en cada proyecto"
+      description: ""
     }
   ];
 
@@ -46,21 +46,18 @@ const AboutSection = () => {
                 <CheckCircle2 className="w-6 h-6 text-cyan-600 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-slate-900 mb-1">Tecnología Avanzada</h4>
-                  <p className="text-slate-600">Impresoras FDM, SLA y SLS de última generación</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-6 h-6 text-cyan-600 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-slate-900 mb-1">Materiales Diversos</h4>
-                  <p className="text-slate-600">PLA, ABS, PETG, Resina, Nylon y materiales especializados</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-6 h-6 text-cyan-600 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-slate-900 mb-1">Asesoría Profesional</h4>
-                  <p className="text-slate-600">Te ayudamos a optimizar tus diseños para mejores resultados</p>
                 </div>
               </div>
             </div>
@@ -93,7 +90,7 @@ const AboutSection = () => {
             >
               <div className="mb-4">{value.icon}</div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">{value.title}</h3>
-              <p className="text-slate-600">{value.description}</p>
+              {value.description && <p className="text-slate-600">{value.description}</p>}
             </div>
           ))}
         </div>

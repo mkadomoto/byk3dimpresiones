@@ -50,22 +50,6 @@ const HeroSection = () => {
               <a href="#servicios">Ver Servicios</a>
             </Button>
           </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl">
-            <div>
-              <div className="text-4xl font-bold text-cyan-400 mb-2">500+</div>
-              <div className="text-slate-400 text-sm">Proyectos Completados</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-cyan-400 mb-2">48h</div>
-              <div className="text-slate-400 text-sm">Tiempo de Entrega</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-cyan-400 mb-2">98%</div>
-              <div className="text-slate-400 text-sm">Satisfacción Cliente</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
