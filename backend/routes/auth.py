@@ -92,16 +92,33 @@ def create_router(db):
     return router
 
 def verify_token(token: str, db):
-    """Verify JWT token and return user"""
+    """Verify JWT token and return user (synchronous wrapper for async call)"""
     try:
+        import asyncio
+        from jose import JWTError, jwt
+        
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             return None
         
-        # Get user from database
-        import asyncio
-        user = asyncio.run(db.users.find_one({"username": username}, {"_id": 0}))
-        return user
+        # Get user from database synchronously
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # If loop is already running, use sync client
+            from pymongo import MongoClient
+            import os
+            sync_client = MongoClient(os.environ['MONGO_URL'])
+            sync_db = sync_client[os.environ['DB_NAME']]
+            user = sync_db.users.find_one({"username": username}, {"_id": 0})
+            sync_client.close()
+            return user
+        else:
+            # If no loop running, use asyncio.run
+            user = asyncio.run(db.users.find_one({"username": username}, {"_id": 0}))
+            return user
     except JWTError:
+        return None
+    except Exception as e:
+        print(f"Error verifying token: {str(e)}")
         return None

@@ -53,10 +53,6 @@ const AboutSection = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-cyan-600 text-white p-6 rounded-xl shadow-xl max-w-[200px]">
-              <div className="text-4xl font-bold mb-1">+3</div>
-              <div className="text-sm">Años de experiencia</div>
-            </div>
           </div>
 
           {/* Right - Content */}

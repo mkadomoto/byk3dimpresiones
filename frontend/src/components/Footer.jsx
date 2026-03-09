@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo-square.png" alt="B&K 3D" className="w-10 h-10" />
+              <img src="/logo-round.png" alt="B&K 3D" className="w-10 h-10 rounded-full object-cover" />
               <span className="text-2xl font-bold text-white">B&K <span className="text-cyan-500">3D</span></span>
             </div>
             <p className="text-slate-400 mb-4">
