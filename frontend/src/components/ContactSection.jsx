@@ -10,11 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Toaster } from './ui/sonner';
 import { toast } from 'sonner';
 import { Mail, Upload, Send, Instagram } from 'lucide-react';
-import axios from 'axios';
 import emailjs from '@emailjs/browser';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = 'service_y8i2t8b';
@@ -23,6 +19,7 @@ const EMAILJS_PUBLIC_KEY = 'rFzNRld1rTPvJuklw';
 
 const ContactSection = () => {
   const [searchParams] = useSearchParams();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,22 +28,25 @@ const ContactSection = () => {
     message: '',
     file: null
   });
+
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState('');
 
   useEffect(() => {
-    // Initialize EmailJS
     emailjs.init(EMAILJS_PUBLIC_KEY);
-    
-    // Pre-fill message if coming from store
+
     const messageParam = searchParams.get('message');
     if (messageParam) {
-      setFormData(prev => ({ ...prev, message: decodeURIComponent(messageParam) }));
+      setFormData(prev => ({
+        ...prev,
+        message: decodeURIComponent(messageParam)
+      }));
     }
   }, [searchParams]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -55,11 +55,13 @@ const ContactSection = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       setFormData(prev => ({
         ...prev,
         file: file
       }));
+
       setFileName(file.name);
     }
   };
@@ -69,7 +71,6 @@ const ContactSection = () => {
     setLoading(true);
 
     try {
-      // Send email via EmailJS
       const emailParams = {
         name: formData.name,
         email: formData.email,
@@ -82,32 +83,14 @@ const ContactSection = () => {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        emailParams
+        emailParams,
+        EMAILJS_PUBLIC_KEY
       );
-
-      // Also save to database
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('phone', formData.phone);
-      formDataToSend.append('service_type', formData.serviceType);
-      formDataToSend.append('message', formData.message);
-      
-      if (formData.file) {
-        formDataToSend.append('file', formData.file);
-      }
-
-      await axios.post(`${API}/contact`, formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
 
       toast.success('¡Mensaje enviado!', {
         description: 'Te contactaremos pronto por email.'
       });
 
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -116,12 +99,16 @@ const ContactSection = () => {
         message: '',
         file: null
       });
+
       setFileName('');
+
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error enviando email:', error);
+
       toast.error('Error al enviar', {
-        description: 'Por favor intenta de nuevo más tarde.'
+        description: 'Por favor intenta nuevamente.'
       });
+
     } finally {
       setLoading(false);
     }
@@ -129,29 +116,43 @@ const ContactSection = () => {
 
   return (
     <section id="contacto" className="py-24 bg-white">
+
       <Toaster richColors position="top-right" />
+
       <div className="container mx-auto px-4">
+
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-cyan-100 text-cyan-700 hover:bg-cyan-200">Contacto</Badge>
+          <Badge className="mb-4 bg-cyan-100 text-cyan-700 hover:bg-cyan-200">
+            Contacto
+          </Badge>
+
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
             Comienza Tu Proyecto
           </h2>
+
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             Cuéntanos sobre tu proyecto y te daremos una cotización personalizada en 24 horas
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Form */}
+
           <Card className="border-2 border-slate-200">
+
             <CardHeader>
-              <CardTitle className="text-2xl">Solicitar Cotización</CardTitle>
+              <CardTitle className="text-2xl">
+                Solicitar Cotización
+              </CardTitle>
+
               <CardDescription>
                 Completa el formulario y nos pondremos en contacto contigo pronto
               </CardDescription>
             </CardHeader>
+
             <CardContent>
+
               <form onSubmit={handleSubmit} className="space-y-6">
+
                 <div>
                   <Label htmlFor="name">Nombre Completo *</Label>
                   <Input
@@ -185,7 +186,7 @@ const ContactSection = () => {
                     id="phone"
                     name="phone"
                     type="tel"
-                    placeholder="+1 234 567 890"
+                    placeholder="+54 11 1234 5678"
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="mt-2"
@@ -194,25 +195,35 @@ const ContactSection = () => {
 
                 <div>
                   <Label htmlFor="serviceType">Tipo de Servicio *</Label>
-                  <Select 
-                    value={formData.serviceType} 
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, serviceType: value }))}
+
+                  <Select
+                    value={formData.serviceType}
+                    onValueChange={(value) =>
+                      setFormData(prev => ({
+                        ...prev,
+                        serviceType: value
+                      }))
+                    }
                     required
                   >
+
                     <SelectTrigger className="mt-2">
                       <SelectValue placeholder="Selecciona un servicio" />
                     </SelectTrigger>
+
                     <SelectContent>
                       <SelectItem value="arquitectura">Arquitectura</SelectItem>
                       <SelectItem value="diseno-interior">Diseño de Interiores</SelectItem>
                       <SelectItem value="corporativo">Corporativo / Empresarial</SelectItem>
                       <SelectItem value="personalizado">Proyecto Personalizado</SelectItem>
                     </SelectContent>
+
                   </Select>
                 </div>
 
                 <div>
                   <Label htmlFor="message">Mensaje *</Label>
+
                   <Textarea
                     id="message"
                     name="message"
@@ -226,17 +237,25 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="file">Adjuntar Archivo 3D (opcional)</Label>
+
+                  <Label htmlFor="file">
+                    Adjuntar Archivo 3D (opcional)
+                  </Label>
+
                   <div className="mt-2">
-                    <label 
-                      htmlFor="file" 
+
+                    <label
+                      htmlFor="file"
                       className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-300 rounded-lg p-6 cursor-pointer hover:border-cyan-500 hover:bg-cyan-50 transition-colors"
                     >
                       <Upload className="w-5 h-5 text-slate-500" />
+
                       <span className="text-slate-600">
                         {fileName || 'Subir archivo (.stl, .obj, .3mf)'}
                       </span>
+
                     </label>
+
                     <input
                       id="file"
                       name="file"
@@ -245,92 +264,106 @@ const ContactSection = () => {
                       onChange={handleFileChange}
                       className="hidden"
                     />
+
                   </div>
+
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-cyan-600 hover:bg-cyan-700 text-white"
                   size="lg"
                   disabled={loading}
                 >
-                  {loading ? (
-                    'Enviando...'
-                  ) : (
+
+                  {loading ? 'Enviando...' : (
                     <>
                       <Send className="w-5 h-5 mr-2" />
                       Enviar Solicitud
                     </>
                   )}
+
                 </Button>
+
               </form>
+
             </CardContent>
+
           </Card>
 
-          {/* Contact Info */}
           <div className="space-y-8">
+
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">Información de Contacto</h3>
-              
+
+              <h3 className="text-2xl font-bold text-slate-900 mb-6">
+                Información de Contacto
+              </h3>
+
               <div className="space-y-6">
+
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+
+                  <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
                     <Mail className="w-6 h-6 text-cyan-600" />
                   </div>
+
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
-                    <a href="mailto:ByK3Dimpresiones@gmail.com" className="text-slate-600 hover:text-cyan-600">
+                    <h4 className="font-semibold text-slate-900 mb-1">
+                      Email
+                    </h4>
+
+                    <a
+                      href="mailto:ByK3Dimpresiones@gmail.com"
+                      className="text-slate-600 hover:text-cyan-600"
+                    >
                       ByK3Dimpresiones@gmail.com
                     </a>
+
                   </div>
+
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+
+                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
                     <Instagram className="w-6 h-6 text-pink-600" />
                   </div>
+
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-1">Instagram</h4>
-                    <a 
-                      href="https://instagram.com/byk.3d.impresiones" 
-                      target="_blank" 
+
+                    <h4 className="font-semibold text-slate-900 mb-1">
+                      Instagram
+                    </h4>
+
+                    <a
+                      href="https://instagram.com/byk.3d.impresiones"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-slate-600 hover:text-pink-600"
                     >
                       @byk.3d.impresiones
                     </a>
+
                   </div>
+
                 </div>
 
                 <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
-                  <p className="text-slate-700 font-medium">📍 Envíos en Buenos Aires</p>
+                  <p className="text-slate-700 font-medium">
+                    📍 Envíos en Buenos Aires
+                  </p>
                 </div>
+
               </div>
+
             </div>
 
-            {/* FAQ Card */}
-            <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-cyan-100">
-              <CardHeader>
-                <CardTitle>Preguntas Frecuentes</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">¿Cuánto tiempo toma una cotización?</h4>
-                  <p className="text-slate-600 text-sm">Respondemos en menos de 24 horas hábiles.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">¿Qué formatos de archivo aceptan?</h4>
-                  <p className="text-slate-600 text-sm">STL, OBJ, 3MF, STEP y la mayoría de formatos 3D.</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">¿Hacen envíos?</h4>
-                  <p className="text-slate-600 text-sm">Sí, enviamos a todo el país con opciones express.</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
+
         </div>
+
       </div>
+
     </section>
   );
 };
