@@ -10,7 +10,10 @@ import { Label } from '../components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Toaster } from '../components/ui/sonner';
-import { Plus, Edit, Trash2, LogOut, Package, Tag } from 'lucide-react';
+import { Plus, Trash2, LogOut, Package, Tag } from 'lucide-react';
+
+import { db } from "../firebase";
+
 import {
  collection,
  addDoc,
@@ -26,7 +29,6 @@ import {
 const AdminPage = ({ user, logout }) => {
 
   const navigate = useNavigate();
-  import { db } from "../firebase";
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -70,7 +72,6 @@ const AdminPage = ({ user, logout }) => {
     setCategories(lista);
   };
 
-  // CLOUDINARY UPLOAD
   const uploadImage = async (file) => {
 
     const url = `https://api.cloudinary.com/v1_1/duiwinvef/image/upload`;
@@ -190,19 +191,6 @@ const AdminPage = ({ user, logout }) => {
     }
   };
 
-  const toggleCategoryInProduct = (categoryId) => {
-
-    setProductForm(prev => ({
-
-      ...prev,
-
-      category_ids: prev.category_ids.includes(categoryId)
-        ? prev.category_ids.filter(id => id !== categoryId)
-        : [...prev.category_ids, categoryId]
-
-    }));
-  };
-
   return (
 
     <div className="min-h-screen bg-slate-50">
@@ -240,8 +228,6 @@ const AdminPage = ({ user, logout }) => {
             </TabsTrigger>
 
           </TabsList>
-
-          {/* PRODUCTOS */}
 
           <TabsContent value="products">
 
@@ -281,17 +267,13 @@ const AdminPage = ({ user, logout }) => {
                       ${p.price}
                     </p>
 
-                    <div className="flex gap-2">
-
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={()=>handleDeleteProduct(p.id)}
-                      >
-                        <Trash2 className="w-4 h-4"/>
-                      </Button>
-
-                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={()=>handleDeleteProduct(p.id)}
+                    >
+                      <Trash2 className="w-4 h-4"/>
+                    </Button>
 
                   </CardContent>
 
@@ -302,8 +284,6 @@ const AdminPage = ({ user, logout }) => {
             </div>
 
           </TabsContent>
-
-          {/* CATEGORIAS */}
 
           <TabsContent value="categories">
 
