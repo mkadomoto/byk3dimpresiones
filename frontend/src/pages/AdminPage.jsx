@@ -11,12 +11,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Toaster } from '../components/ui/sonner';
 import { Plus, Edit, Trash2, LogOut, Package, Tag } from 'lucide-react';
-import { collection, addDoc, getDocs, orderBy, query, serverTimestamp, doc, deleteDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.16.0/firebase-firestore.js';
+import {
+ collection,
+ addDoc,
+ getDocs,
+ orderBy,
+ query,
+ serverTimestamp,
+ doc,
+ deleteDoc,
+ updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const AdminPage = ({ user, logout }) => {
 
   const navigate = useNavigate();
-  const db = window.db;
+  import { db } from "../firebase";
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
