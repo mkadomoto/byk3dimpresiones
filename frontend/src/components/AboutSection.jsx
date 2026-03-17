@@ -38,7 +38,7 @@ const AboutSection = () => {
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Somos especialistas en impresión 3D en Buenos Aires, enfocados en brindar 
             soluciones innovadoras para arquitectos, diseñadores de interiores y empresas 
-            que buscan llevar sus ideas a la realidad.
+            que buscan llevar sus ideas a la realidad. También contamos con un área especializada para la atención a estudiantes.
           </p>
         </div>
 
