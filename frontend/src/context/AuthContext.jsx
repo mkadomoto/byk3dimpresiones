@@ -1,66 +1,51 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (token) {
-      // Verify token and get user info
-      axios.get(`${API}/auth/me?token=${token}`)
-        .then(response => {
-          setUser(response.data);
-        })
-        .catch(() => {
-          localStorage.removeItem('token');
-          setToken(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
 
   const login = async (username, password) => {
-    try {
-      const response = await axios.post(`${API}/auth/login`, { username, password });
-      setToken(response.data.access_token);
-      setUser(response.data.user);
-      localStorage.setItem('token', response.data.access_token);
+
+    // CAMBIÁ ESTO POR TU USUARIO Y CONTRASEÑA
+    if (username === "admin" && password === "Bermoto123!") {
+
+      const userData = {
+        username: "admin",
+        role: "admin"
+      };
+
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+
       return { success: true };
-    } catch (error) {
-      return { success: false, error: error.response?.data?.detail || 'Login failed' };
+
     }
+
+    return { success: false, error: "Usuario o contraseña incorrectos" };
+
   };
 
   const logout = () => {
-    setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
   };
 
   const isAdmin = () => {
-    return user?.role === 'admin';
+    return user?.role === "admin";
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
+
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-  return context;
+  return useContext(AuthContext);
 };
