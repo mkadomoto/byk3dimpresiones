@@ -1,5 +1,5 @@
 // AdminPage.jsx
-
+import { collection, addDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 
