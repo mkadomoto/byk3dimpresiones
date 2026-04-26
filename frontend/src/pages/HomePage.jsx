@@ -6,17 +6,20 @@ import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 
-import { db } from '../firebase';
-import { collection, getDocs, limit, query } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
+import { db } from "../firebase";
+import {
+  collection,
+  getDocs
+} from "firebase/firestore";
 
 const HomePage = () => {
 
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    fetchProducts();
 
-    // 🔹 SCROLL POR HASH (#contacto)
+    // Scroll por hash (#contacto, etc)
     const hash = window.location.hash;
     if (hash) {
       setTimeout(() => {
@@ -26,38 +29,35 @@ const HomePage = () => {
         }
       }, 100);
     }
-
-    // 🔹 TRAER PRODUCTOS
-    const fetchProducts = async () => {
-      try {
-        const q = query(collection(db, "products"), limit(6));
-        const snapshot = await getDocs(q);
-
-        const lista = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-
-        setFeaturedProducts(lista);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProducts();
-
   }, []);
+
+  const fetchProducts = async () => {
+    const snapshot = await getDocs(collection(db, "products"));
+
+    const lista = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    setProducts(lista);
+  };
+
+  // ⚠️ CAMBIÁ ESTE NÚMERO POR EL TUYO
+  const whatsappNumber = "5491123456789";
+
+  const generarMensaje = (producto) => {
+    return `Hola! Me interesa este producto: ${producto.name}`;
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
-
       <Header />
 
       <main className="pt-20">
-
         <HeroSection />
+        <ServicesSection />
 
-        {/* 🔥 NUEVA SECCIÓN PRODUCTOS */}
+        {/* 🔥 SECCIÓN PRODUCTOS */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
 
@@ -65,53 +65,58 @@ const HomePage = () => {
               Productos Destacados
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-6">
 
-              {featuredProducts.map(p => (
-                <div key={p.id} className="border rounded-xl p-4 shadow-sm">
+              {products.slice(0, 6).map(product => (
 
-                  {p.image_url && (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-2xl shadow-md p-4 border"
+                >
+
+                  {product.image_url && (
                     <img
-                      src={p.image_url}
-                      className="rounded mb-4 w-full h-48 object-cover"
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-full h-56 object-cover rounded-xl mb-4"
                     />
                   )}
 
-                  <h3 className="font-semibold text-lg">{p.name}</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {product.name}
+                  </h3>
 
                   <p className="text-sm text-gray-600 mb-2">
-                    {p.description}
+                    {product.description}
                   </p>
 
-                  <p className="font-bold mb-4">
-                    ${p.price}
+                  <p className="font-bold text-lg mb-4">
+                    ${product.price}
                   </p>
+
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(generarMensaje(product))}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl transition"
+                  >
+                    Contactar para comprar
+                  </a>
 
                 </div>
+
               ))}
 
-            </div>
-
-            <div className="text-center mt-10">
-              <Link
-                to="/tienda"
-                className="bg-cyan-600 text-white px-6 py-3 rounded-lg hover:bg-cyan-700"
-              >
-                Ver toda la tienda
-              </Link>
             </div>
 
           </div>
         </section>
 
-        <ServicesSection />
         <AboutSection />
         <ContactSection />
-
       </main>
 
       <Footer />
-
     </div>
   );
 };
